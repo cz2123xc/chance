@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+
 import {
   StyleSheet,
   Text,
@@ -8,27 +9,26 @@ import {
 } from 'react-native';
 
 export default function Sub() {
-  const [percent, setPercent] = useState<any>(0);
-  const [count, setCount] = useState<any>(0);
-  const [successCount, setSuccessCount] = useState<any>(0);
-  const [successRate, setSuccessRate] = useState<any>(0);
+  const [percent, setPercent] = useState<number | null | string>();
+  const [count, setCount] = useState<number | null | string>();
+  const [successCount, setSuccessCount] = useState<number | null>();
+  const [successRate, setSuccessRate] = useState<number | null>();
 
   const Simulate = () => {
-    let success: number = 0;
-    // count 만큼 반복
-    for (let i = 0; i < count; i++) {
-      // 성공 여부를 결정하는 랜덤 값을 생성 최대값 100 최소값 percent z
-      const random = Math.random() * 100;
-      // 성공 여부에 따라 성공 횟수를 증가시킨다.
-      if (random < percent) {
-        success = success + 1;
+    if (count && percent) {
+      let success: number = 0;
+      for (let i = 0; i < count; i++) {
+        const random = Math.random() * 100;
+        if (random < percent) {
+          success = success + 1;
+        }
       }
+      setSuccessCount(success);
+      const SRate = isNaN(Number(((success / Number(count)) * 100).toFixed(2)))
+        ? 0
+        : ((success / Number(count)) * 100).toFixed(2);
+      setSuccessRate(Number(SRate));
     }
-    setSuccessCount(success);
-    const SRate = isNaN(Number(((success / count) * 100).toFixed(2)))
-      ? 0
-      : ((success / count) * 100).toFixed(2);
-    setSuccessRate(SRate);
   };
 
   return (
@@ -39,8 +39,8 @@ export default function Sub() {
           <Text style={styles.subTitle}>확률 (%)</Text>
           <TextInput
             style={styles.input}
-            value={isNaN(percent) ? 0 : percent}
-            onChangeText={text => setPercent(parseFloat(text))}
+            value={percent ? percent.toString() : ''}
+            onChangeText={text => setPercent(text)}
             placeholder="확률을 입력 하세요 ( 숫자 ) "
           />
         </View>
@@ -48,9 +48,8 @@ export default function Sub() {
           <Text style={styles.subTitle}>강화개수</Text>
           <TextInput
             style={styles.input}
-            // 숫자만 입력 가능
-            value={isNaN(count) ? 0 : count}
-            onChangeText={text => setCount(parseFloat(text))}
+            value={count ? count.toString() : ''}
+            onChangeText={text => setCount(text)}
             placeholder="강화개수를 입력 하세요 ( 숫자 ) "
           />
         </View>
@@ -64,11 +63,16 @@ export default function Sub() {
       <View>
         <View>
           <Text style={styles.successCount}>성공 수량</Text>
-          <Text style={styles.countResult}>{successCount + ' 개'}</Text>
+          <Text style={styles.countResult}>
+            {successCount?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') ??
+              0}
+          </Text>
         </View>
         <View>
           <Text style={styles.successRate}>이번 회차 성공률</Text>
-          <Text style={styles.rateResult}>{successRate + ' %'}</Text>
+          <Text style={styles.rateResult}>
+            {successRate ? successRate.toString() + ' %' : 0 + ' %'}
+          </Text>
         </View>
       </View>
     </View>
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   container: {
-    backgroundColor: '#000000',
+    backgroundColor: '#000',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',

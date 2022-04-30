@@ -20,6 +20,8 @@ target 'chance' do
   )
 
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'chanceTests' do
     inherit! :complete
     # Pods for testing

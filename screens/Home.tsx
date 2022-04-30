@@ -8,12 +8,17 @@ const Percent = (count: number, percent: number): number => {
 
 const Price = (count: number, percent: number, price: number) => {
   const result = (count * percent * price).toFixed(0);
-  return isNaN(Number(result)) ? 0 : result;
+  return isNaN(Number(result))
+    ? 0
+    : result.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 const successCount = (count: number, percent: number) => {
   const percentage = Percent(count, percent);
-  return Math.floor(percentage / 100);
+  const EA = percentage / 100;
+  // 소수점 아래 버림 toFixed = 문자를 반환해서 Math 사용
+  const MathEA = Math.floor(EA);
+  return MathEA.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export default function Home() {
@@ -29,7 +34,7 @@ export default function Home() {
           <Text style={styles.subTitle}>확률 (%)</Text>
           <TextInput
             style={styles.input}
-            value={isNaN(percent) ? 0 : percent}
+            value={isNaN(percent) ? null : percent.toString()}
             onChangeText={text => setPercent(text)}
             placeholder="확률을 입력 하세요 ( 숫자 ) "
           />
@@ -38,8 +43,8 @@ export default function Home() {
           <Text style={styles.subTitle}>횟수</Text>
           <TextInput
             style={styles.input}
-            value={isNaN(count) ? 0 : count}
-            onChangeText={text => setCount(parseFloat(text))}
+            value={count ? count.toString() : ''}
+            onChangeText={text => setCount(text)}
             placeholder="시도 횟수를 입력 하세요 ( 숫자 ) "
           />
         </View>
@@ -47,8 +52,8 @@ export default function Home() {
           <Text style={styles.subTitle}>가격 (1 EA)</Text>
           <TextInput
             style={styles.input}
-            value={isNaN(price) ? 0 : price}
-            onChangeText={text => setPrice(parseFloat(text))}
+            value={price ? price.toString() : ''}
+            onChangeText={text => setPrice(text)}
             placeholder="가격을 입력 하세요 ( 숫자 ) "
           />
         </View>

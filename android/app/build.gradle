@@ -79,7 +79,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+        enableHermes: false,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -147,12 +147,12 @@ android {
             externalNativeBuild {
                 ndkBuild {
                     arguments "APP_PLATFORM=android-21",
-                        "APP_STL=c++_shared",
-                        "NDK_TOOLCHAIN_VERSION=clang",
-                        "GENERATED_SRC_DIR=$buildDir/generated/source",
-                        "PROJECT_BUILD_DIR=$buildDir",
-                        "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
-                        "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
+                            "APP_STL=c++_shared",
+                            "NDK_TOOLCHAIN_VERSION=clang",
+                            "GENERATED_SRC_DIR=$buildDir/generated/source",
+                            "PROJECT_BUILD_DIR=$buildDir",
+                            "REACT_ANDROID_DIR=$rootDir/../node_modules/react-native/ReactAndroid",
+                            "REACT_ANDROID_BUILD_DIR=$rootDir/../node_modules/react-native/ReactAndroid/build"
                     cFlags "-Wall", "-Werror", "-fexceptions", "-frtti", "-DWITH_INSPECTOR=1"
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
@@ -162,7 +162,7 @@ android {
                     // Fix for windows limit on number of character in file paths and in command lines
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                         arguments "NDK_OUT=${rootProject.projectDir.getParent()}\\.cxx",
-                            "NDK_APP_SHORT_COMMANDS=true"
+                                "NDK_APP_SHORT_COMMANDS=true"
                     }
                 }
             }
@@ -230,6 +230,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if(project.hasProperty("MYAPP_UPLOAD_STORE_FILE")){
+                storeFile file(project.property("MYAPP_UPLOAD_STORE_FILE"))
+                storePassword project.property("MYAPP_UPLOAD_STORE_PASSWORD")
+                keyAlias project.property("MYAPP_UPLOAD_KEY_ALIAS")
+                keyPassword project.property("MYAPP_UPLOAD_KEY_PASSWORD")
+            }
+        }
     }
     buildTypes {
         debug {
@@ -238,7 +246,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -262,6 +270,9 @@ android {
 }
 
 dependencies {
+
+    implementation project(':react-native-svg')
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion

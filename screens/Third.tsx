@@ -8,42 +8,52 @@ import {
 } from 'react-native';
 
 export default function Third() {
-  const [first, setFirst] = React.useState<any>(0);
-  const [firstPercent, setFirstPercent] = React.useState<any>(0);
-  const [second, setSecond] = React.useState<any>(0);
-  const [secondPercent, setSecondPercent] = React.useState<any>(0);
-  const [third, setThird] = React.useState<any>(0);
-  const [thirdPercent, setThirdPercent] = React.useState<any>(0);
-  const [fourth, setFourth] = React.useState<any>(0);
-  const [fourthPercent, setFourthPercent] = React.useState<any>(0);
-  const [fifth, setFifth] = React.useState<any>(0);
-  const [fifthPercent, setFifthPercent] = React.useState<any>(0);
-  const [sixth, setSixth] = React.useState<any>(0);
-  const [sixthPercent, setSixthPercent] = React.useState<any>(0);
-  const [price, setPrice] = React.useState<any>(0);
+  const [first, setFirst] = React.useState<number | null>();
+  const [firstPercent, setFirstPercent] = React.useState<number | null>();
+  const [second, setSecond] = React.useState<number | null>();
+  const [secondPercent, setSecondPercent] = React.useState<number | null>();
+  const [third, setThird] = React.useState<number | null>();
+  const [thirdPercent, setThirdPercent] = React.useState<number | null>();
+  const [fourth, setFourth] = React.useState<number | null>();
+  const [fourthPercent, setFourthPercent] = React.useState<number | null>();
+  const [fifth, setFifth] = React.useState<number | null>();
+  const [fifthPercent, setFifthPercent] = React.useState<number | null>();
+  const [sixth, setSixth] = React.useState<number | null>();
+  const [sixthPercent, setSixthPercent] = React.useState<number | null>();
+  const [price, setPrice] = React.useState<number | null>();
 
-  const getNesting = (percentValue: number, priceValue: number): number => {
-    const result = (100 / percentValue) * priceValue;
-    if (result === Infinity) {
-      return 0;
+  const getNesting = (
+    percentValue: number | null | undefined,
+    priceValue: number | null | undefined,
+  ): any => {
+    if (
+      percentValue !== null &&
+      priceValue !== null &&
+      percentValue !== undefined &&
+      priceValue !== undefined
+    ) {
+      const result = (100 / percentValue) * priceValue;
+      if (result === Infinity) {
+        return 0;
+      }
+      return isNaN(result) ? 0 : Math.floor(result);
     }
-    return isNaN(result) ? 0 : result;
   };
 
   const resetParameters = () => {
-    setFirst(0);
-    setFirstPercent(0);
-    setSecond(0);
-    setSecondPercent(0);
-    setThird(0);
-    setThirdPercent(0);
-    setFourth(0);
-    setFourthPercent(0);
-    setFifth(0);
-    setFifthPercent(0);
-    setSixth(0);
-    setSixthPercent(0);
-    setPrice(0);
+    setFirst(null);
+    setFirstPercent(null);
+    setSecond(null);
+    setSecondPercent(null);
+    setThird(null);
+    setThirdPercent(null);
+    setFourth(null);
+    setFourthPercent(null);
+    setFifth(null);
+    setFifthPercent(null);
+    setSixth(null);
+    setSixthPercent(null);
+    setPrice(null);
   };
 
   useEffect(() => {
@@ -78,7 +88,7 @@ export default function Third() {
         <Text style={styles.subTitle}>개당 가격</Text>
         <View style={styles.setWrapper}>
           <TextInput
-            value={isNaN(price) ? 0 : price}
+            value={price ? price.toString() : ''}
             onChangeText={text => setPrice(parseFloat(text))}
             style={styles.priceInput}
           />
@@ -91,7 +101,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>1차 강화 성공률</Text>
           <TextInput
-            value={isNaN(firstPercent) ? 0 : firstPercent}
+            value={firstPercent ? firstPercent.toString() : ''}
             onChangeText={text => setFirstPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -100,7 +110,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>2차 강화 성공률</Text>
           <TextInput
-            value={isNaN(secondPercent) ? 0 : secondPercent}
+            value={secondPercent ? secondPercent.toString() : ''}
             onChangeText={text => setSecondPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -111,7 +121,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>3차 강화 성공률</Text>
           <TextInput
-            value={isNaN(thirdPercent) ? 0 : thirdPercent}
+            value={thirdPercent ? thirdPercent.toString() : ''}
             onChangeText={text => setThirdPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -120,7 +130,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>4차 강화 성공률</Text>
           <TextInput
-            value={isNaN(fourthPercent) ? 0 : fourthPercent}
+            value={fourthPercent ? fourthPercent.toString() : ''}
             onChangeText={text => setFourthPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -131,7 +141,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>5차 강화 성공률</Text>
           <TextInput
-            value={isNaN(fifthPercent) ? 0 : fifthPercent}
+            value={fifthPercent ? fifthPercent.toString() : ''}
             onChangeText={text => setFifthPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -140,7 +150,7 @@ export default function Third() {
         <View>
           <Text style={styles.subTitle}>6차 강화 성공률</Text>
           <TextInput
-            value={isNaN(sixthPercent) ? 0 : sixthPercent}
+            value={sixthPercent ? sixthPercent.toString() : ''}
             onChangeText={text => setSixthPercent(parseFloat(text))}
             style={styles.input}
             placeholder="퍼센트 입력 하세요"
@@ -150,22 +160,28 @@ export default function Third() {
 
       <View>
         <Text style={styles.subTitle}>
-          1차강화 예상 비용 {first.toFixed(0)}
+          1차강화 예상 비용{' '}
+          {first?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
         <Text style={styles.subTitle}>
-          2차강화 예상 비용 {second.toFixed(0)}
+          2차강화 예상 비용{' '}
+          {second?.toFixed()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
         <Text style={styles.subTitle}>
-          3차강화 예상 비용 {third.toFixed(0)}
+          3차강화 예상 비용{' '}
+          {third?.toFixed()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
         <Text style={styles.subTitle}>
-          4차강화 예상 비용 {fourth.toFixed(0)}
+          4차강화 예상 비용{' '}
+          {fourth?.toFixed()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
         <Text style={styles.subTitle}>
-          5차강화 예상 비용 {fifth.toFixed(0)}
+          5차강화 예상 비용{' '}
+          {fifth?.toFixed()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
         <Text style={styles.subTitle}>
-          6차강화 예상 비용 {sixth.toFixed(0)}
+          6차강화 예상 비용{' '}
+          {sixth?.toFixed()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
       </View>
     </View>

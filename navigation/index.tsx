@@ -21,9 +21,9 @@ function RootNavigator() {
   return (
     <>
       <Stack.Navigator>
-        <Stack.Screen name="시뮬레이션" component={Sub} />
         <Stack.Screen name="예상비용 산출" component={Home} />
         <Stack.Screen name="강화 성공률" component={Third} />
+        <Stack.Screen name="시뮬레이션" component={Sub} />
       </Stack.Navigator>
     </>
   );
