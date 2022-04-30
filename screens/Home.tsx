@@ -1,14 +1,19 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 
-const Percent = (count: number, percent: number) => {
-  const result = (count * percent).toFixed(20).replace(/\.0+$/, '');
-  return isNaN(Number(result)) ? '확률 / 횟수 미입력' : result;
+const Percent = (count: number, percent: number): number => {
+  const result = count * percent;
+  return isNaN(Number(result)) ? 0 : result;
 };
 
 const Price = (count: number, percent: number, price: number) => {
   const result = (count * percent * price).toFixed(0);
-  return isNaN(Number(result)) ? '비용 미입력' : result;
+  return isNaN(Number(result)) ? 0 : result;
+};
+
+const successCount = (count: number, percent: number) => {
+  const percentage = Percent(count, percent);
+  return Math.floor(percentage / 100);
 };
 
 export default function Home() {
@@ -19,12 +24,12 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.mainTitle}>강화 확률 계산기</Text>
+        <Text style={styles.mainTitle}>예상비용 산출기</Text>
         <View>
-          <Text style={styles.subTitle}>확률</Text>
+          <Text style={styles.subTitle}>확률 (%)</Text>
           <TextInput
             style={styles.input}
-            value={percent}
+            value={isNaN(percent) ? 0 : percent}
             onChangeText={text => setPercent(text)}
             placeholder="확률을 입력 하세요 ( 숫자 ) "
           />
@@ -33,17 +38,17 @@ export default function Home() {
           <Text style={styles.subTitle}>횟수</Text>
           <TextInput
             style={styles.input}
-            value={count}
-            onChangeText={text => setCount(text)}
+            value={isNaN(count) ? 0 : count}
+            onChangeText={text => setCount(parseFloat(text))}
             placeholder="시도 횟수를 입력 하세요 ( 숫자 ) "
           />
         </View>
         <View>
-          <Text style={styles.subTitle}>가격</Text>
+          <Text style={styles.subTitle}>가격 (1 EA)</Text>
           <TextInput
             style={styles.input}
-            value={price}
-            onChangeText={text => setPrice(text)}
+            value={isNaN(price) ? 0 : price}
+            onChangeText={text => setPrice(parseFloat(text))}
             placeholder="가격을 입력 하세요 ( 숫자 ) "
           />
         </View>
@@ -51,11 +56,13 @@ export default function Home() {
 
       <View style={styles.resultWrapper}>
         <View>
-          <Text style={styles.resultPercentTitle}>예상 확률</Text>
-          <Text style={styles.resultPercent}>{Percent(count, percent)} %</Text>
+          <Text style={styles.resultPercentTitle}>예상 성공 수량</Text>
+          <Text style={styles.resultPercent}>
+            {successCount(count, percent)} 개
+          </Text>
         </View>
         <View>
-          <Text style={styles.resultPriceTitle}>예상 평균 비용</Text>
+          <Text style={styles.resultPriceTitle}>비용</Text>
           <Text style={styles.resultPrice}>{Price(count, percent, price)}</Text>
         </View>
       </View>
