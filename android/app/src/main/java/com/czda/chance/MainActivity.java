@@ -1,4 +1,4 @@
-package com.chance;
+package com.czda.chance;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

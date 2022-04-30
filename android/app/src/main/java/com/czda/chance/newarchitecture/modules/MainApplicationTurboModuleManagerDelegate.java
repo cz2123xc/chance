@@ -1,4 +1,4 @@
-package com.chance.newarchitecture.modules;
+package com.czda.chance.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
