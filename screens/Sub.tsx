@@ -14,7 +14,7 @@ export default function Sub() {
   const [successCount, setSuccessCount] = useState<number | null>();
   const [successRate, setSuccessRate] = useState<number | null>();
 
-  const Simulate = () => {
+  const Simulate = async () => {
     if (count && percent) {
       let success: number = 0;
       for (let i = 0; i < count; i++) {
