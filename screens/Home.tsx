@@ -7,18 +7,33 @@ const Percent = (count: number, percent: number): number => {
 };
 
 const Price = (count: number, percent: number, price: number) => {
-  const result = (count * percent * price).toFixed(0);
-  return isNaN(Number(result))
+  // 실패 확률 계산
+  let result: number | string = 100 / percent;
+  // 실패 확률 기반 비용 계산 소수점 없음
+  result = (result * count * price).toFixed(0);
+
+  // result 가 NaN이면 0으로 바꿔줌 아니라면 스트링으로 변환 후 콤마
+  result = isNaN(Number(result))
     ? 0
-    : result.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    : result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  return result;
 };
 
 const successCount = (count: number, percent: number) => {
   const percentage = Percent(count, percent);
-  const EA = percentage / 100;
+  let result = percentage / 100;
+
+  if (result < 1) {
+    // 1 이하면 소수점 2자리까지 반올림
+    result = Number(result.toFixed(2));
+  } else {
+    // 1 이상이면 소수점 버림
+    result = Number(result.toFixed(0));
+  }
+
   // 소수점 아래 버림 toFixed = 문자를 반환해서 Math 사용
-  const MathEA = Math.floor(EA);
-  return MathEA.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export default function Home() {
@@ -40,12 +55,12 @@ export default function Home() {
           />
         </View>
         <View>
-          <Text style={styles.subTitle}>횟수</Text>
+          <Text style={styles.subTitle}>제작 개수</Text>
           <TextInput
             style={styles.input}
             value={count ? count.toString() : ''}
             onChangeText={text => setCount(text)}
-            placeholder="시도 횟수를 입력 하세요 ( 숫자 ) "
+            placeholder="제작 개수를 입력 하세요 ( 숫자 ) "
           />
         </View>
         <View>
